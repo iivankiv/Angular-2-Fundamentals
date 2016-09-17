@@ -9,6 +9,7 @@ import {
     selector: 'note-card',
     styles: [`
         .note-card {
+            margin: 10px;
             padding: 15px;
             border-radius: 2px;
             width: 100%;

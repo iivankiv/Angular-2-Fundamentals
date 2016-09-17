@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NoteCard } from '../ui';
+import { NoteCard, NoteCreator } from '../ui';
+import { NoteService } from '../services';
 
 @Component({
     selector: 'notes-container',
-    directives: [ NoteCard ],
+    directives: [ NoteCard, NoteCreator ],
     styles: [`
         .notes {
             padding-top: 50px;
@@ -15,7 +16,7 @@ import { NoteCard } from '../ui';
     template: `
         <div class="row center-xs notes">
             <div class="col-xs-6 creator">
-                note creator here
+                <note-creator (createNote)="onCreateNote($event)"></note-creator>
             </div>
             <div class="notes col-xs-8">
                 <div class="row between-xs">
@@ -32,13 +33,23 @@ import { NoteCard } from '../ui';
 })
 
 export class Notes {
-    notes = [
-        { title: 'Chores#1', value: 'Don\'t forget to clean up', color: 'lightblue' },
-        { title: 'Chores#2', value: 'Don\'t forget to clean up', color: 'lightblue' },
-        { title: 'Chores#3', value: 'Don\'t forget to clean up', color: 'lightblue' }
-    ];
+    notes = [];
+
+    constructor(private noteService: NoteService) {
+        this.noteService.getNotes()
+        .subscribe((res => this.notes = res.data));
+    }
 
     onNoteChecked(note, i) {
-        this.notes.splice(i, 1);
+        this.noteService.completeNote(note)
+        .subscribe(note => {
+                const i = this.notes.findIndex(localNote => localNote.id === note.id);
+                this.notes.splice(i, 1);
+            })
+    }
+
+    onCreateNote(note) {
+        this.noteService.createNote(note)
+        .subscribe(note => this.notes.push(note));
     }
 }
