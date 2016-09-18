@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NoteCard, NoteCreator } from '../ui';
 import { NoteService } from '../services';
+import { Store } from '../store';
+import 'rxjs/Rx';
 
 @Component({
     selector: 'notes-container',
@@ -35,21 +37,21 @@ import { NoteService } from '../services';
 export class Notes {
     notes = [];
 
-    constructor(private noteService: NoteService) {
+    constructor(private noteService: NoteService, private store: Store) {
+        this.store.changes.pluck('notes')
+        .subscribe((notes: any) => this.notes = notes);
+
         this.noteService.getNotes()
-        .subscribe((res => this.notes = res.data));
+        .subscribe();
     }
 
-    onNoteChecked(note, i) {
+    onNoteChecked(note) {
         this.noteService.completeNote(note)
-        .subscribe(note => {
-                const i = this.notes.findIndex(localNote => localNote.id === note.id);
-                this.notes.splice(i, 1);
-            })
+        .subscribe()
     }
 
     onCreateNote(note) {
         this.noteService.createNote(note)
-        .subscribe(note => this.notes.push(note));
+        .subscribe();
     }
 }
