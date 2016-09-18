@@ -1,3 +1,10 @@
+TO START THIS APP YOU SHOULD:
+1) RUN <NPM INSTALL>
+2) RUN <NPM RUN API>
+3) RUN <NPM START>
+4) ADD FIELD <userId> to the table <notes> from DB which located: /node_modules/@angularclass/api/retain/data/
+
+
 <p align="center">
   <a href="http://courses.angularclass.com/courses/angular-2-fundamentals" target="_blank">
     <img alt="Angular 2 Fundamentals" src="https://res.cloudinary.com/angularclass/image/upload/v1468640978/courses-logo-large.png">
